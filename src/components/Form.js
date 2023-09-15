@@ -32,6 +32,7 @@ function Form(props) {
           autoComplete="off"
           value={name}
           onChange={handleChange}
+          required
         />
       </FormControl>
       <Button type="submit" colorScheme="teal" size="lg" mt={2}>

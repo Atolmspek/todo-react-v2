@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Todo from "./components/Todo";
-import FilterButton from "./components/FilterButton";
 import Form from "./components/Form";
 import { nanoid } from "nanoid";
 import { ChakraProvider } from "@chakra-ui/react";
@@ -89,9 +88,7 @@ export default function App(props) {
             justifyContent="center"
             mb={4}
           >
-            <FilterButton />
-            <FilterButton />
-            <FilterButton />
+           
           </Flex>
           <Heading as="h2" id="list-heading" mt={4} mb={2} fontSize="xl">
             {headingText}
@@ -106,7 +103,7 @@ export default function App(props) {
             {taskList}
           </Box>
           <Text mt={4} fontSize="sm" color="gray.600">
-            Designed with ❤️ using Chakra UI
+            Designed using Chakra UI
           </Text>
         </Box>
       </Flex>
