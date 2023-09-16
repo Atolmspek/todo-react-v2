@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Checkbox,
   Input,
   Box,
   Flex,
@@ -12,6 +11,7 @@ import {
 function Todo(props) {
   const [isEditing, setEditing] = useState(false);
   const [newName, setNewName] = useState(props.name);
+  const [taskStatus, setTaskStatus] = useState(props.status);
 
   const handleEditClick = () => {
     setEditing(true);
@@ -31,17 +31,38 @@ function Todo(props) {
     setEditing(false);
   };
 
+  const handleStatusChange = () => {
+    if (taskStatus === "Todo") {
+      setTaskStatus("In Progress");
+    } else if (taskStatus === "In Progress") {
+      setTaskStatus("Completed");
+    } else {
+      setTaskStatus("Todo");
+    }
+  };
+
+  const getStatusColor = () => {
+    if (taskStatus === "Todo") {
+      return "gray";
+    } else if (taskStatus === "In Progress") {
+      return "yellow";
+    } else {
+      return "green";
+    }
+  };
+
+
   const viewTemplate = (
     <Flex alignItems="center" justifyContent="space-between">
-      <Checkbox
-        isChecked={props.completed}
-        onChange={() => props.toggleTaskCompleted(props.id)}
-      >
-        <Text textDecoration={props.completed ? "line-through" : "none"}>
+   
+        <Text textDecoration>
           {props.name}
         </Text>
-      </Checkbox>
+    
       <Flex>
+      <Button  colorScheme={getStatusColor()}
+        onClick={handleStatusChange} size="sm" marginRight={2}>{taskStatus}</Button>
+
         <Button colorScheme="teal" size="sm" onClick={handleEditClick}>
           Edit
         </Button>

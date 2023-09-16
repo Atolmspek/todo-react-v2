@@ -6,19 +6,20 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 export default function App(props) {
-  // Obtener tareas guardadas en el localStorage al cargar la aplicación
   const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
   const [tasks, setTasks] = useState(savedTasks);
 
-  // Guardar tareas en el localStorage cada vez que cambien
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+  //function for localStorage instead of useState
+  const saveTasksToLocalStorage = (updatedTasks) => {
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  };
 
   function addTask(name) {
-    const newTask = { id: nanoid(), name, completed: false };
-    setTasks([...tasks, newTask]);
+    const newTask = { id: nanoid(), name, completed: false, status: "Todo"  };
+    const updatedTasks = [...tasks, newTask];
+    setTasks(updatedTasks);
+    saveTasksToLocalStorage(updatedTasks);
   }
 
   function toggleTaskCompleted(id) {
@@ -29,11 +30,13 @@ export default function App(props) {
       return task;
     });
     setTasks(updatedTasks);
+    saveTasksToLocalStorage(updatedTasks);
   }
 
   function deleteTask(id) {
     const remainingTasks = tasks.filter((task) => id !== task.id);
     setTasks(remainingTasks);
+    saveTasksToLocalStorage(remainingTasks);
   }
 
   function editTask(id, newName) {
@@ -44,6 +47,7 @@ export default function App(props) {
       return task;
     });
     setTasks(editedTaskList);
+    saveTasksToLocalStorage(editedTaskList);
   }
 
   const taskList = tasks.map((task) => (
@@ -55,6 +59,7 @@ export default function App(props) {
       toggleTaskCompleted={toggleTaskCompleted}
       deleteTask={deleteTask}
       editTask={editTask}
+      status={task.status}
     />
   ));
 
@@ -68,15 +73,18 @@ export default function App(props) {
         align="center"
         justify="center"
         minH="100vh"
+        minW="100vh"
         bg="gray.100"
       >
         <Box
-          className="todoapp"
-          p={5}
-          textAlign="center"
-          bg="white"
-          rounded="lg"
-          shadow="md"
+           className="todoapp"
+           p={5}
+           textAlign="center"
+           bg="white"
+           rounded="lg"
+           shadow="md"
+           width="50%" 
+           height="90vh"
         >
           <Heading as="h1" mb={4} fontSize="2xl" color="blue.500">
             Todo
